@@ -4,7 +4,7 @@ Build-Depends: debhelper (>= 8.0.0)
 Standards-Version: 1.0
 Section: utils
 
-Package: pyamp
+Package: turkamp
 Priority: extra  
 Architecture: all
 Depends: python3, python3-pyqt6, libqt6multimedia6, gstreamer1.0-plugins-ugly, gstreamer1.0-libav, python3-pyqt6.qtmultimedia, gstreamer1.0-plugins-good, gstreamer1.0-plugins-bad
