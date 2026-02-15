@@ -30,4 +30,4 @@ jobs:
           prerelease: false
           title: "Latest release"
           files: |
-            /output/turkamp_1.0.deb
+            /output/turkamp_1.0_all.deb
