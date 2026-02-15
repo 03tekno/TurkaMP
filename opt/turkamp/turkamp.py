@@ -260,8 +260,8 @@ class TurkaPlayer(QMainWindow):
     def clear_playlist(self): self.list.clear(); self.save_settings()
 
     def manual_add(self):
-        files, _ = QFileDialog.getOpenFileNames(self, "Müzik Seç", "", "Ses Dosyaları (*.mp3 *.wav *.flac *.m4a *.aac)")
-        if files: 
+      files, _ = QFileDialog.getOpenFileNames(self, "Müzik Seç", "", "Ses Dosyaları (*.mp3 *.wav *.flac *.m4a *.aac *.ogg *.opus *.wma *.m4b *.aiff *.mid *.amr)")
+      if files: 
             for f in files: self.add_to_list(f)
             self.save_settings()
 
