@@ -237,20 +237,25 @@ class TurkaPlayer(QMainWindow):
         panel_style = f"QFrame#VolumePanel, QFrame#NavPanel {{ background-color: {panel_bg}; border-radius: 20px; border: 1px solid {shadow_light if self.is_dark_mode else '#ffffff'}; border-bottom: 5px solid {shadow_dark}; border-right: 2px solid {shadow_dark}; }} QFrame#LCDContainer {{ background-color: #000; border-radius: 15px; border: 4px solid {color}; }}"
         self.centralWidget().setStyleSheet(panel_style)
         
-        btn_base = f"QPushButton {{ background: qlineargradient(x1:0, y1:0, x2:0, y2:1, {btn_grad}); border: 1px solid {shadow_light}; color: {text_color}; font-weight: bold; border-bottom: 4px solid {shadow_dark}; }} QPushButton:hover {{ border: 2px solid {color}; }} QPushButton:pressed {{ border-bottom: 1px solid {shadow_dark}; margin-top: 3px; }}"
+        # Tema rengi içermeyen, kareleşmeyen buton tasarımı
+        btn_clean = f"QPushButton {{ background: qlineargradient(x1:0, y1:0, x2:0, y2:1, {btn_grad}); border: 1px solid {shadow_light}; color: {text_color}; font-weight: bold; border-bottom: 4px solid {shadow_dark}; outline: none; }} QPushButton:hover {{ border: 1px solid {shadow_light}; background: qlineargradient(x1:0, y1:0, x2:0, y2:1, {btn_grad}); }} QPushButton:pressed {{ border-bottom: 1px solid {shadow_dark}; margin-top: 3px; }}"
         
+        # Alttaki Navigasyon ve Ses butonları
         for b in [self.btn_vol_down, self.btn_vol_up, self.btn_back5, self.btn_prev, self.btn_next, self.btn_fwd5]: 
-            b.setStyleSheet(btn_base.replace("QPushButton {", "QPushButton { border-radius: 19px;"))
-        self.btn_play.setStyleSheet(btn_base.replace("QPushButton {", "QPushButton { border-radius: 32px;"))
+            b.setStyleSheet(btn_clean.replace("QPushButton {", "QPushButton { border-radius: 19px;"))
         
-        rect_base = btn_base.replace("QPushButton {", "QPushButton { border-radius: 8px;")
+        # Play/Pause butonu stili
+        self.btn_play.setStyleSheet(btn_clean.replace("QPushButton {", "QPushButton { border-radius: 32px;"))
+        self.btn_play.setText("❚❚" if self.player.playbackState() == QMediaPlayer.PlaybackState.PlayingState else "▶")
+        
+        # Üstteki butonlar
+        rect_base = btn_clean.replace("QPushButton {", "QPushButton { border-radius: 8px;")
         for b in [self.btn_add, self.btn_theme, self.btn_mode, self.btn_list_toggle, self.btn_shuffle, self.btn_repeat]:
             b.setStyleSheet(rect_base)
-        
-        # Karıştır ve Tekrarla aktif durum görselleştirmesi
-        active_css = f"QPushButton {{ border: 2px solid {color}; color: {color}; border-bottom: 2px solid {shadow_dark}; }}"
-        if self.is_shuffled: self.btn_shuffle.setStyleSheet(rect_base + active_css)
-        if self.is_repeated: self.btn_repeat.setStyleSheet(rect_base + active_css)
+            
+        # Shuffle/Repeat aktifken sadece metin rengi değişir
+        if self.is_shuffled: self.btn_shuffle.setStyleSheet(rect_base + f"QPushButton {{ color: {color}; }}")
+        if self.is_repeated: self.btn_repeat.setStyleSheet(rect_base + f"QPushButton {{ color: {color}; }}")
         
         self.search_bar.setStyleSheet(f"background: {panel_bg}; color: {text_color}; border: 2px solid {shadow_dark}; border-radius: 10px; padding: 5px;")
         self.list.setStyleSheet(f"QListWidget {{ background: {panel_bg}; color: {text_color}; border-radius: 15px; border: 2px solid {shadow_dark}; selection-background-color: {color}; padding: 5px; }} QScrollBar:vertical {{ border: none; background: transparent; width: 8px; }} QScrollBar::handle:vertical {{ background: {scroll_color}; border-radius: 4px; }} QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {{ height: 0px; }}")
