@@ -7,6 +7,6 @@ Section: utils
 Package: pyamp
 Priority: extra  
 Architecture: all
-Depends: python3, python3-pyqt6, libqt6multimedia6, gstreamer1.0-plugins-ugly, gstreamer1.0-libav, python3-pyqt6.qtmultimedia
+Depends: python3, python3-pyqt6, libqt6multimedia6, gstreamer1.0-plugins-ugly, gstreamer1.0-libav, python3-pyqt6.qtmultimedia, gstreamer1.0-plugins-good, gstreamer1.0-plugins-bad
 Description: turkamp
  Debian/Pardus için Müzik Çalar
