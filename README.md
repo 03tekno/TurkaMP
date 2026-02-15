@@ -2,7 +2,7 @@
 
 Python ve Qt6 ile yazılmış basit ve hafif müzik çalar uygulamadır.
 
-.mp3, .wav, .ogg, .flac, .m4a, .aac, .wma, .mp4, .opus, gibi popüler ses formatlarını destekler.
+Desteklenen ses formatları = ('.mp3', '.wav', '.flac', '.m4a', '.aac', '.ogg', '.opus', '.wma', '.m4b', '.aiff', '.mid', '.amr')
 
 Debian tabanlı sistemler için .deb dosyası download link: https://github.com/03tekno/TurkaMP/releases/tag/current
 
