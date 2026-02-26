@@ -175,7 +175,7 @@ class TurkaPlayer(QMainWindow):
         self.top_btn_container = QWidget()
         top_btn_layout = QHBoxLayout(self.top_btn_container); top_btn_layout.setContentsMargins(0, 0, 0, 0); top_btn_layout.setSpacing(8) 
         self.btn_add = self.create_rect_btn("Ekle +", 65, 30); self.btn_list_toggle = self.create_rect_btn("Liste ≣", 65, 30)
-        self.btn_shuffle = self.create_rect_btn("Karıştır", 65, 30); self.btn_repeat = self.create_rect_btn("Tekrarla", 65, 30)
+        self.btn_shuffle = self.create_rect_btn("Rastgele", 65, 30); self.btn_repeat = self.create_rect_btn("Tekrarla", 65, 30)
         self.btn_theme = self.create_rect_btn("Tema", 60, 30); self.btn_mode = self.create_rect_btn("☾", 35, 30) 
         for b in [self.btn_add, self.btn_list_toggle, self.btn_shuffle, self.btn_repeat, self.btn_theme, self.btn_mode]: top_btn_layout.addWidget(b)
         self.layout_main.addWidget(self.top_btn_container)
