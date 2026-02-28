@@ -107,6 +107,8 @@ class ProVolumeKnob(QWidget):
         painter.drawText(rect_f, Qt.AlignmentFlag.AlignCenter, f"%{self.value}")
 
 class ModernSpectrum(QWidget):
+    modeChanged = pyqtSignal(int)
+
     def __init__(self, player):
         super().__init__()
         self.player = player
@@ -120,6 +122,7 @@ class ModernSpectrum(QWidget):
 
     def mousePressEvent(self, event):
         self.mode = (self.mode + 1) % 10
+        self.modeChanged.emit(self.mode)
         self.update()
 
     def animate(self):
@@ -132,41 +135,33 @@ class ModernSpectrum(QWidget):
     def paintEvent(self, event):
         painter = QPainter(self); painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.fillRect(self.rect(), QColor("#000000"))
-        
         w = self.width() / self.bars
         mid_y = self.height() / 2
-        
         for i in range(self.bars):
             h = self.heights[i]
             grad = QLinearGradient(QPointF(0, float(self.height())), QPointF(0, float(self.height() - h)))
             grad.setColorAt(0, self.color); grad.setColorAt(1, QColor(255, 255, 255, 180))
             painter.setBrush(grad); painter.setPen(Qt.PenStyle.NoPen)
-
-            if self.mode == 0: # Klasik Alt Çubuklar
-                painter.drawRoundedRect(int(i * w + 2), int(self.height() - h), int(w - 4), int(h), 2, 2)
-            elif self.mode == 1: # Merkezden Yayılım
-                painter.drawRoundedRect(int(i * w + 2), int(mid_y - h/2), int(w - 4), int(h), 2, 2)
-            elif self.mode == 2: # Üstten Asılı
-                painter.drawRoundedRect(int(i * w + 2), 0, int(w - 4), int(h), 2, 2)
-            elif self.mode == 3: # İnce Çizgiler
+            if self.mode == 0: painter.drawRoundedRect(int(i * w + 2), int(self.height() - h), int(w - 4), int(h), 2, 2)
+            elif self.mode == 1: painter.drawRoundedRect(int(i * w + 2), int(mid_y - h/2), int(w - 4), int(h), 2, 2)
+            elif self.mode == 2: painter.drawRoundedRect(int(i * w + 2), 0, int(w - 4), int(h), 2, 2)
+            elif self.mode == 3: 
                 painter.setPen(QPen(self.color, 2))
                 painter.drawLine(int(i * w + w/2), self.height(), int(i * w + w/2), int(self.height() - h))
-            elif self.mode == 4: # Noktalar
-                painter.drawEllipse(QPointF(i * w + w/2, self.height() - h), 3, 3)
-            elif self.mode == 5: # Çift Taraflı Sınır
+            elif self.mode == 4: painter.drawEllipse(QPointF(i * w + w/2, self.height() - h), 3, 3)
+            elif self.mode == 5: 
                 painter.drawRect(int(i * w + 2), int(self.height() - h), int(w - 4), 4)
                 painter.drawRect(int(i * w + 2), int(h), int(w - 4), 4)
-            elif self.mode == 6: # Basamaklı Bloklar
+            elif self.mode == 6: 
                 step = (h // 12) * 12
                 painter.drawRect(int(i * w + 2), int(self.height() - step), int(w - 4), int(step))
-            elif self.mode == 7: # Dijital Kareler
-                for b in range(int(h // 10)):
-                    painter.drawRect(int(i * w + 2), self.height() - (b * 10), int(w - 4), 7)
-            elif self.mode == 8: # Dalga Formu
+            elif self.mode == 7: 
+                for b in range(int(h // 10)): painter.drawRect(int(i * w + 2), self.height() - (b * 10), int(w - 4), 7)
+            elif self.mode == 8: 
                 if i < self.bars - 1:
                     painter.setPen(QPen(self.color, 2))
                     painter.drawLine(int(i * w), int(self.height() - h), int((i+1) * w), int(self.height() - self.heights[i+1]))
-            elif self.mode == 9: # Dolu Alan (Dağ)
+            elif self.mode == 9: 
                 painter.setBrush(QColor(self.color.red(), self.color.green(), self.color.blue(), 100))
                 poly = QPolygonF([QPointF(i * w, self.height()), QPointF(i * w, self.height() - h), 
                                  QPointF((i+1) * w, self.height() - self.heights[min(i+1, self.bars-1)]), QPointF((i+1) * w, self.height())])
@@ -180,15 +175,24 @@ class TurkaPlayer(QMainWindow):
         if os.path.exists(icon_path): self.setWindowIcon(QIcon(icon_path))
 
         self.player = QMediaPlayer(); self.audio = QAudioOutput(); self.player.setAudioOutput(self.audio)
-        self.is_dark_mode = True; self.is_shuffled = False; self.is_repeated = False; 
-        self.is_list_visible = False 
+        self.is_dark_mode = True; self.is_shuffled = False; self.is_repeated = False; self.is_list_visible = False 
         
         self.themes = ["#00e676", "#00b0ff", "#ff3d00", "#d4af37", "#bd93f9", "#ff79c6", "#8be9fd", "#50fa7b", "#ffb86c", "#ff5555", "#f1fa8c", "#00d2ff", "#9c27b0", "#76ff03", "#ffffff", "#ff9800", "#03a9f4", "#e91e63", "#607d8b", "#795548"]
         self.current_theme_idx = 0
         self.collapsed_width = 440; self.expanded_width = 850; self.player_height = 520
         
-        self.init_ui(); self.setup_logic(); self.load_settings(); 
-        self.is_list_visible = False; self.toggle_list(force=False); self.apply_theme_styles()
+        self.init_ui()
+        self.setup_logic()
+        self.load_settings()
+        self.apply_theme_styles()
+        self.toggle_list(force=self.is_list_visible)
+        self.center_window() # Uygulama açılışında ekranın ortasına al
+
+    def center_window(self):
+        qr = self.frameGeometry()
+        cp = QGuiApplication.primaryScreen().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
 
     def init_ui(self):
         main_widget = QWidget(); self.setCentralWidget(main_widget)
@@ -262,8 +266,8 @@ class TurkaPlayer(QMainWindow):
 
     def setup_logic(self):
         self.btn_add.clicked.connect(self.manual_add); self.btn_theme.clicked.connect(self.change_theme); self.btn_mode.clicked.connect(self.toggle_mode)
-        self.btn_list_toggle.clicked.connect(lambda: self.toggle_list()); self.btn_shuffle.clicked.connect(lambda: setattr(self, 'is_shuffled', not self.is_shuffled) or self.apply_theme_styles() or self.save_settings())
-        self.btn_repeat.clicked.connect(lambda: setattr(self, 'is_repeated', not self.is_repeated) or self.apply_theme_styles() or self.save_settings())
+        self.btn_list_toggle.clicked.connect(lambda: self.toggle_list()); self.btn_shuffle.clicked.connect(self.toggle_shuffle)
+        self.btn_repeat.clicked.connect(self.toggle_repeat)
         self.btn_vol_up.clicked.connect(lambda: self.change_volume(5)); self.btn_vol_down.clicked.connect(lambda: self.change_volume(-5))
         self.list.itemDoubleClicked.connect(self.play_file); self.btn_play.clicked.connect(self.toggle_play)
         self.btn_next.clicked.connect(self.next_track); self.btn_prev.clicked.connect(self.prev_track)
@@ -273,6 +277,10 @@ class TurkaPlayer(QMainWindow):
         self.progress_bar.sliderMoved.connect(self.player.setPosition); self.player.playbackStateChanged.connect(self.apply_theme_styles)
         self.player.mediaStatusChanged.connect(self.handle_media_end); self.list.fileDropped.connect(self.handle_dropped_files)
         self.list.deleteRequested.connect(self.remove_selected_item); self.list.clearRequested.connect(self.clear_playlist); self.search_bar.textChanged.connect(self.filter_playlist)
+        self.vumeter.modeChanged.connect(lambda: self.save_settings())
+
+    def toggle_shuffle(self): self.is_shuffled = not self.is_shuffled; self.apply_theme_styles(); self.save_settings()
+    def toggle_repeat(self): self.is_repeated = not self.is_repeated; self.apply_theme_styles(); self.save_settings()
 
     def filter_playlist(self, text):
         for i in range(self.list.count()): item = self.list.item(i); item.setHidden(text.lower() not in item.text().lower())
@@ -316,10 +324,13 @@ class TurkaPlayer(QMainWindow):
         item = QListWidgetItem(os.path.basename(path)); item.setData(Qt.ItemDataRole.UserRole, path); self.list.addItem(item)
     def update_volume(self, v): self.audio.setVolume(v/100); self.save_settings()
     def change_volume(self, delta): v = max(0, min(100, self.knob.value + delta)); self.knob.setValue(v); self.update_volume(v)
+    
     def play_file(self, item):
         if not item: return
         path = item.data(Qt.ItemDataRole.UserRole)
-        if path: self.player.setSource(QUrl.fromLocalFile(path)); self.player.play(); self.title_lbl.setText(os.path.basename(path))
+        if path and os.path.exists(path): 
+            self.player.setSource(QUrl.fromLocalFile(path)); self.player.play(); self.title_lbl.setText(os.path.basename(path))
+            self.save_settings()
 
     def toggle_play(self):
         if self.player.playbackState() == QMediaPlayer.PlaybackState.PlayingState: self.player.pause()
@@ -348,7 +359,11 @@ class TurkaPlayer(QMainWindow):
     
     def save_settings(self):
         playlist = [self.list.item(i).data(Qt.ItemDataRole.UserRole) for i in range(self.list.count())]
-        data = {"theme_index": self.current_theme_idx, "volume": self.knob.value, "playlist": playlist, "is_dark": self.is_dark_mode, "is_shuffled": self.is_shuffled, "is_repeated": self.is_repeated}
+        data = {
+            "theme_index": self.current_theme_idx, "volume": self.knob.value, "playlist": playlist, 
+            "is_dark": self.is_dark_mode, "is_shuffled": self.is_shuffled, "is_repeated": self.is_repeated,
+            "is_list_visible": self.is_list_visible, "current_index": self.list.currentRow(), "spectrum_mode": self.vumeter.mode
+        }
         try:
             with open(CONFIG_FILE, "w", encoding="utf-8") as f: json.dump(data, f, ensure_ascii=False, indent=4)
         except: pass
@@ -357,12 +372,16 @@ class TurkaPlayer(QMainWindow):
         if os.path.exists(CONFIG_FILE):
             try:
                 with open(CONFIG_FILE, "r", encoding="utf-8") as f:
-                    data = json.load(f); self.current_theme_idx = data.get("theme_index", 0); self.is_dark_mode = data.get("is_dark", True)
+                    data = json.load(f)
+                    self.current_theme_idx = data.get("theme_index", 0); self.is_dark_mode = data.get("is_dark", True)
                     self.is_shuffled = data.get("is_shuffled", False); self.is_repeated = data.get("is_repeated", False)
+                    self.is_list_visible = data.get("is_list_visible", False)
                     v = data.get("volume", 75); self.knob.setValue(v); self.audio.setVolume(v/100)
-                    self.btn_mode.setText("☾" if self.is_dark_mode else "☼")
+                    self.vumeter.mode = data.get("spectrum_mode", 0); self.btn_mode.setText("☾" if self.is_dark_mode else "☼")
                     for path in data.get("playlist", []):
                         if os.path.exists(path): self.add_to_list(path)
+                    last_idx = data.get("current_index", -1)
+                    if 0 <= last_idx < self.list.count(): self.list.setCurrentRow(last_idx)
             except: pass
 
     def closeEvent(self, event): self.save_settings(); event.accept()
