@@ -16,7 +16,7 @@ Sıradan müzik çalarlardan sıkıldınız mı? Turka Music Player, minimalist 
 
 Profesyonel Ses Kontrolü: Analog hissi veren "Pro Volume Knob" (ses tekerleği) ile ses seviyesini hassas bir şekilde ayarlayın.
 
-Geniş Format Desteği: .mp3 .wav .flac .m4a .aac .ogg .opus .wma .m4b .aiff .mid .amr içeren geniş bir ses formatı yelpazesini sorunsuz oynatın.
+Geniş Format Desteği: .mp3 .wav .flac .m4a .mpga .aac .ogg .opus .wma .m4b .aiff .mid .amr içeren geniş bir ses formatı yelpazesini sorunsuz oynatın.
 
 Modern ve Adaptif Arayüz: Tek tuşla Gece (Dark) ve Gündüz (Light) modları arasında geçiş yapın. Ayrıca 20'den fazla özel tema rengiyle oynatıcınızı kişiliğinize göre özelleştirin.
 
