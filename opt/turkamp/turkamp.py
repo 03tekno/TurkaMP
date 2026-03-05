@@ -2,7 +2,7 @@ import sys
 import os
 import random
 import json
-import math  # Eksik olan modül eklendi
+import math
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
                              QHBoxLayout, QPushButton, QLabel, QFrame, QFileDialog, 
                              QListWidget, QSlider, QListWidgetItem, QMenu, QLineEdit)
