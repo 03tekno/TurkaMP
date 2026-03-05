@@ -1,6 +1,6 @@
 # Turka Music Player (TR)
 
-Python ve Qt6 ile yazılmış basit ve hafif müzik çalar uygulamadır.
+PyQt6 ile yazılmış basit, hafif ve modern bir müzik çalar uygulamadır.
 
 Debian tabanlı sistemler için .deb dosyası download link: https://github.com/03tekno/TurkaMP/releases/tag/current
 
