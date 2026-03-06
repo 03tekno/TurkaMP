@@ -1,6 +1,7 @@
 # Turka Music Player (TR)
 
 PyQt6 ile yazılmış basit, hafif ve modern bir müzik çalar uygulamadır.
+
 .mp3 .wav .flac .m4a .mpga .aac .ogg .opus .wma .m4b .aiff .mid .amr  ses formatlarını sorunsuz oynatır.
 
 
