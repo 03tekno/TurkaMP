@@ -1,0 +1,4 @@
+#!/bin/bash
+# Uygulama /opt altında çalışacak
+cd /opt/turkamp
+python3 turkamp.py

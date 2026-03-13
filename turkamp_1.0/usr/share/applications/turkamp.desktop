@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Turka Music Player
+Exec=/usr/bin/turkamp
+Icon=turkamp
+Type=Application
+Categories=Audio;Music;Player;
