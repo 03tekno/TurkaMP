@@ -6,8 +6,7 @@ Turka Music Player .mp3 .wav .flac .m4a .mpga .aac .ogg .opus .wma .m4b .aiff .m
 
 Debian tabanlı sistemler için .deb dosyası download link: 
 
-https://github.com/03tekno/TurkaMP/releases/download/v1.0
-
+https://github.com/03tekno/TurkaMP/releases/tag/v1.0
 ![screenshot](turkamp1.png "screenshot")
 ![screenshot](turkamp2.png "screenshot")
 
