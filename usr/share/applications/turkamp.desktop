@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=Turka Music Player
-Comment=Müzik Çalar
-Exec=python3 /opt/turkamp/turkamp.py
-Icon=/opt/turkamp/turkamp.png
-Terminal=false
-Type=Application
-Categories=AudioVideo;Player;
