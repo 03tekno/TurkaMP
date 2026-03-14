@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Turka Music Player
+Name=TurkaMP
 Exec=/usr/bin/turkamp
 Icon=turkamp
 Type=Application

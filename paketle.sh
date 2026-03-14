@@ -44,7 +44,7 @@ chmod +x "$BUILD_DIR/usr/bin/turkamp"
 # Desktop dosyası
 cat <<EOF > "$BUILD_DIR/usr/share/applications/turkamp.desktop"
 [Desktop Entry]
-Name=Turka Music Player
+Name=TurkaMP
 Exec=/usr/bin/turkamp
 Icon=turkamp
 Type=Application

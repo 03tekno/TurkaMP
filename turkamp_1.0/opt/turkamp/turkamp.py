@@ -6,7 +6,7 @@ import math
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
                              QHBoxLayout, QPushButton, QLabel, QFrame, QFileDialog, 
                              QListWidget, QSlider, QListWidgetItem, QMenu, QLineEdit)
-from PyQt6.QtCore import Qt, QRect, QPointF, QTimer, QUrl, pyqtSignal, QRectF # QRectF eklendi
+from PyQt6.QtCore import Qt, QRect, QPointF, QTimer, QUrl, pyqtSignal, QRectF
 from PyQt6.QtGui import QAction, QPainter, QColor, QLinearGradient, QPen, QFont, QFontMetrics, QIcon, QGuiApplication, QPolygonF
 from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput
 
@@ -41,9 +41,10 @@ class DragDropList(QListWidget):
     def show_context_menu(self, position):
         menu = QMenu(self)
         menu.setStyleSheet("QMenu { background-color: #2c3e50; color: white; border: 1px solid #7f8c8d; } QMenu::item:selected { background-color: #34495e; }")
-        remove_action = QAction("Parçayı Sil", self)
+        # English translation for context menu
+        remove_action = QAction("Remove Track", self)
         remove_action.triggered.connect(lambda: self.deleteRequested.emit())
-        clear_action = QAction("Tümünü Sil", self)
+        clear_action = QAction("Clear All", self)
         clear_action.triggered.connect(lambda: self.clearRequested.emit())
         if self.itemAt(position): menu.addAction(remove_action)
         menu.addAction(clear_action)
@@ -119,7 +120,8 @@ class ModernSpectrum(QWidget):
         self.heights = [0.0] * self.bars
         self.target_heights = [0.0] * self.bars
         self.timer = QTimer(); self.timer.timeout.connect(self.animate); self.timer.start(30)
-        self.setToolTip("Görünümü değiştirmek için tıkla!")
+        # English translation for tooltip
+        self.setToolTip("Click to change visualizer mode!")
 
     def mousePressEvent(self, event):
         self.mode = (self.mode + 1) % 10
@@ -137,7 +139,6 @@ class ModernSpectrum(QWidget):
         painter = QPainter(self); painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.fillRect(self.rect(), QColor("#000000"))
         
-        # Grid/Izgara Arka Planı
         painter.setPen(QColor(30, 30, 30))
         for x in range(0, self.width(), 20): painter.drawLine(x, 0, x, self.height())
         for y in range(0, self.height(), 20): painter.drawLine(0, y, self.width(), y)
@@ -174,7 +175,6 @@ class ModernSpectrum(QWidget):
                                  QPointF((i+1) * w, self.height() - self.heights[min(i+1, self.bars-1)]), QPointF((i+1) * w, self.height())])
                 painter.drawPolygon(poly)
         
-        # Scanlines (LCD Efekti)
         painter.setPen(QColor(255, 255, 255, 15))
         for i in range(0, self.height(), 3):
             painter.drawLine(0, i, self.width(), i)
@@ -213,7 +213,8 @@ class TurkaPlayer(QMainWindow):
         self.left_panel = QWidget(); self.layout_left = QVBoxLayout(self.left_panel); self.layout_left.setContentsMargins(0, 0, 0, 0); self.layout_left.setSpacing(10); self.left_panel.setFixedWidth(400)
         self.lcd_container = QFrame(); self.lcd_container.setObjectName("LCDContainer"); self.lcd_container.setFixedHeight(180) 
         lcd_lyt = QVBoxLayout(self.lcd_container); lcd_lyt.setContentsMargins(12, 10, 12, 10)
-        self.title_lbl = ScrollingLabel("Turka Music Player - Hazır"); lcd_lyt.addWidget(self.title_lbl)
+        # English translation for title
+        self.title_lbl = ScrollingLabel("Turka Music Player - Ready"); lcd_lyt.addWidget(self.title_lbl)
         self.vumeter = ModernSpectrum(self.player); lcd_lyt.addWidget(self.vumeter)
         self.layout_left.addWidget(self.lcd_container)
 
@@ -222,9 +223,10 @@ class TurkaPlayer(QMainWindow):
         self.progress_bar = QSlider(Qt.Orientation.Horizontal); prog_lyt.addWidget(self.time_lbl); prog_lyt.addWidget(self.progress_bar); self.layout_left.addWidget(self.progress_container)
 
         self.top_btn_container = QWidget(); top_btn_layout = QHBoxLayout(self.top_btn_container); top_btn_layout.setContentsMargins(0, 0, 0, 0); top_btn_layout.setSpacing(8) 
-        self.btn_add = self.create_rect_btn("Ekle +", 65, 30); self.btn_list_toggle = self.create_rect_btn("Liste ≣", 65, 30)
-        self.btn_shuffle = self.create_rect_btn("Rastgele", 65, 30); self.btn_repeat = self.create_rect_btn("Tekrarla", 65, 30)
-        self.btn_theme = self.create_rect_btn("Tema", 60, 30); self.btn_mode = self.create_rect_btn("☾", 35, 30) 
+        # English translation for buttons
+        self.btn_add = self.create_rect_btn("Add +", 65, 30); self.btn_list_toggle = self.create_rect_btn("List ≣", 65, 30)
+        self.btn_shuffle = self.create_rect_btn("Shuffle", 65, 30); self.btn_repeat = self.create_rect_btn("Repeat", 65, 30)
+        self.btn_theme = self.create_rect_btn("Theme", 60, 30); self.btn_mode = self.create_rect_btn("☾", 35, 30) 
         for b in [self.btn_add, self.btn_list_toggle, self.btn_shuffle, self.btn_repeat, self.btn_theme, self.btn_mode]: top_btn_layout.addWidget(b)
         self.layout_left.addWidget(self.top_btn_container)
 
@@ -240,7 +242,8 @@ class TurkaPlayer(QMainWindow):
         self.layout_left.addWidget(self.nav_container); self.layout_horizontal.addWidget(self.left_panel)
 
         self.right_panel = QWidget(); self.layout_right = QVBoxLayout(self.right_panel); self.layout_right.setContentsMargins(0, 0, 0, 0); self.layout_right.setSpacing(10)
-        self.search_bar = QLineEdit(); self.search_bar.setPlaceholderText("Parçalarda ara..."); self.search_bar.setFixedHeight(35)
+        # English translation for placeholder
+        self.search_bar = QLineEdit(); self.search_bar.setPlaceholderText("Search tracks..."); self.search_bar.setFixedHeight(35)
         self.list = DragDropList(); self.layout_right.addWidget(self.search_bar); self.layout_right.addWidget(self.list); self.layout_horizontal.addWidget(self.right_panel)
 
     def create_circle_btn(self, text, size): btn = QPushButton(text); btn.setFixedSize(size, size); return btn
@@ -309,7 +312,8 @@ class TurkaPlayer(QMainWindow):
     def clear_playlist(self): self.list.clear(); self.save_settings()
 
     def manual_add(self):
-      files, _ = QFileDialog.getOpenFileNames(self, "Müzik Seç", "", "Ses Dosyaları (*.mp3 *.wav *.flac *.m4a *.mpga *.aac *.ogg *.opus *.wma *.m4b *.aiff *.mid *.amr *.au *.snd *.ac3 *.voc *.mka)")
+      # English translation for dialog
+      files, _ = QFileDialog.getOpenFileNames(self, "Select Music", "", "Audio Files (*.mp3 *.wav *.flac *.m4a *.mpga *.aac *.ogg *.opus *.wma *.m4b *.aiff *.mid *.amr *.au *.snd *.ac3 *.voc *.mka)")
       if files: 
             for f in files: self.add_to_list(f)
             self.save_settings()
@@ -369,13 +373,11 @@ class TurkaPlayer(QMainWindow):
         td = self.player.duration()
         dm, ds = divmod(td // 1000, 60)
         
-        # Metadata Bilgisi (Dinamik Bilgi Akışı)
         path = self.player.source().toLocalFile()
         meta_info = ""
         if path and os.path.exists(path):
             ext = os.path.splitext(path)[1].upper()[1:]
             size = os.path.getsize(path) / (1024 * 1024)
-            # Temsili bitrate hesaplama
             if td > 0:
                 br = int((os.path.getsize(path) * 8) / (td / 1000) / 1000)
                 meta_info = f"[{ext} | {size:.1f}MB | {br}kbps]"
