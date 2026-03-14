@@ -3,4 +3,4 @@ Name=TurkaMP
 Exec=/usr/bin/turkamp
 Icon=turkamp
 Type=Application
-Categories=Audio;Music;Player;
+Categories=AudioVideo;Audio;Player;GTK;

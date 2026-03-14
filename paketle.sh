@@ -47,7 +47,7 @@ Name=TurkaMP
 Exec=/usr/bin/turkamp
 Icon=turkamp
 Type=Application
-Categories=Audio;Music;Player;
+Categories=AudioVideo;Audio;Player;GTK;
 EOF
 
 dpkg-deb --root-owner-group --build "$BUILD_DIR"
