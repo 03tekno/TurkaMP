@@ -35,7 +35,6 @@ EOF
 # Başlatıcı script (/usr/bin/turkamp)
 cat <<EOF > "$BUILD_DIR/usr/bin/turkamp"
 #!/bin/bash
-# Uygulama /opt altında çalışacak
 cd /opt/turkamp
 python3 turkamp.py
 EOF
@@ -51,7 +50,6 @@ Type=Application
 Categories=Audio;Music;Player;
 EOF
 
-# Paketle (Root sahipliği ile)
 dpkg-deb --root-owner-group --build "$BUILD_DIR"
 
 echo "İşlem tamamlandı! $BUILD_DIR.deb dosyası oluşturuldu."
