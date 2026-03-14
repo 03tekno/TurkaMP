@@ -1,4 +1,4 @@
-# Turka Music Player (Türkçe)
+# TurkaMP (Turka Music Player)
 
 PyQt6 ile yazılmış basit, hafif ve modern bir müzik çalar uygulamadır.
 
