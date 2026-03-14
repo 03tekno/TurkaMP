@@ -1,4 +1,4 @@
-# Turka Music Player (TR)
+# Turka Music Player (Türkçe)
 
 PyQt6 ile yazılmış basit, hafif ve modern bir müzik çalar uygulamadır.
 
